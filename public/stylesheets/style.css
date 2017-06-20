@@ -1,0 +1,202 @@
+body {
+  padding: 0px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+body.layout-full {
+
+    min-width: 1080px;
+}
+
+
+a {
+  color: #00B7FF;
+}
+
+@font-face {
+    font-family: 'League Gothic';
+    src: url('/fonts/league-gothic/league-gothic.eot');
+    src: url('/fonts/league-gothic/league-gothic.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/league-gothic/league-gothic.woff') format('woff'),
+         url('/fonts/league-gothic/league-gothic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.login {
+  margin: 0 0 20px 0;
+  font-family: 'League Gothic';
+  font-weight: normal;
+  line-height: 1.2;
+  font-size: 64pt;
+  letter-spacing: 1.6pt;
+  text-transform: uppercase;
+  text-shadow: none;
+  word-wrap: break-word;
+  padding-bottom: 20pt;
+}
+
+.login img{
+   width: 466pt;
+   padding-bottom: 15pt;
+}
+
+.btn-warning {
+  background-color: RGB( 41,153,144 );
+  border-color: RGB( 41,153,144 );
+}
+
+.logincontainer {
+    width: 550pt;
+    height: 350pt;
+    padding: 0px;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: 0px;
+    text-align: center;
+}
+
+
+.login-center{
+  text-align: center;
+}
+
+.login-center button{
+  width: 150pt;
+  height: 70pt;
+  font-size: 24pt;
+}
+.h4, h4 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#username, h1 {
+    font-size: 45px;
+    font-weight: bold;
+}
+.about h4 {
+  padding-top: 20px;
+}
+
+@media (min-width: 768px){
+  .input-group {
+      display: flex!important;
+  }
+  .col-md-7 {
+      border-left: 4px solid;
+  }
+  #focusedInput:focus {
+      border: 0;
+      box-shadow: none;
+  }
+  .form-horizontal .control-label {
+      text-align: left;
+  }
+  #focusedInput:focus {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  }
+  .form-horizontal .form-group {
+      margin-right: 0px;
+      margin-left: 0px;
+  }
+  .col-sm-10 {
+    width: 75%;
+    margin-left: 20px;
+  }
+  .form-horizontal .control-label {
+    padding-left: 0px;
+    font-size: 16px;
+    font-weight: normal;
+  }
+  .navbar-right {
+      margin: 15px -10px 0px 0;
+  }
+})
+
+.list-group-item {
+    margin-bottom: -15px;
+}
+
+.panel-body {
+  max-height: 345px;
+  overflow-y: scroll;
+}
+.clickable-row {
+    cursor: pointer;
+}
+.navbar-brand {
+    height: 19.9pt;
+}
+
+.navbar-form {
+    padding-top: 3pt;
+}
+
+.progress {
+    background-color: #a5a5a5;
+}
+
+.img-rounded {
+    width: 100%;
+}
+
+
+.nav > li > a {
+    padding: 5px 10px;
+}
+
+.nav-tabs > li > a {
+    border-radius: 15px 15px 0 0;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: rgba(126, 130, 135, 0.5);
+    width: 260pt;
+    text-align: center;
+}
+
+.nav-tabs > li {
+    margin-top: 15px;
+}
+
+.nav-tabs {
+    height: 53px;
+    border: none;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+  background-color: rgb(41,153,144);
+  border: 1px solid rgb(41,153,144);
+  color: #fff;
+}
+
+.navbar-form {
+    background-color: rgb(183,183,183);
+    width: 100%;
+    margin: 0px;
+    padding: 10px
+}
+
+.navbar-form .form-group {
+    width: 100%;
+}
+
+.navbar-inverse {
+    border: none;
+}
+
+.panel-heading {
+    cursor: pointer;
+}
+
+#reportDate {
+    margin: 15px 10px 0 0px;
+}

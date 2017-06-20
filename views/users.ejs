@@ -1,0 +1,168 @@
+<% include header %>
+<% include nav %>
+<div class="container">
+  <h2><%= found %> users matches of <%= total %></h2>
+  <% if(locals.fav){ %>
+  <br />
+
+    <div class="panel-group" id="accordion">
+      <div class="panel panel-default">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+          <h4 class="panel-title">
+            <a class="accordion-toggle">Bookmarked user</a>
+          </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+          <div class="panel-body">
+            <table id="fav-table" class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>X</th><th>FIRST NAME</th><th>LAST NAME</th><th>E-MAIL</th><th>STATUS</th><th>VERSION</th><th>LAST ACTIVE</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (var i = 0; i < fav.length; i++) { %>
+                <tr class='clickable-row' data='<%= users[i].id %>'>
+                  <td><input type="checkbox" class="bookmark" data='<%= users[i].id %>' value="" checked></td>
+                  <td><%= fav[i].firstName %></td>
+                  <td><%= fav[i].lastName %></td>
+                  <td><%= fav[i].email %></td>
+                  <td><%= fav[i].status %></td>
+                  <td><%= fav[i].version %></td>
+                  <td><%= fav[i].lastActive %></td>
+
+                </tr>
+               <% } %>
+              <tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title"  data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
+            <a class="accordion-toggle">Last users</a>
+          </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse">
+          <div class="panel-body">
+  <% } %>
+
+            <br />
+            <table id="users-table" class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>FIRST NAME</th><th>LAST NAME</th><th>E-MAIL</th><th>STATUS</th><th>VERSION</th><th>LAST ACTIVE</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (var i = 0; i < users.length; i++) { %>
+                <tr class='clickable-row' data='<%= users[i].id %>'>
+                  <td><%= users[i].firstName %></td>
+                  <td><%= users[i].lastName %></td>
+                  <td><%= users[i].email %></td>
+                  <td><%= users[i].status %></td>
+                  <td><%= users[i].version %></td>
+                  <td><%= users[i].lastActive %></td>
+
+                </tr>
+               <% } %>
+              <tbody>
+            </table>
+          </div>
+<% if(locals.fav){ %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% } %>
+
+<script>
+    var list = document.getElementsByClassName('clickable-row');
+    for (var i = 0; i < list.length; i++) {
+      addEvent(list[i], "click",
+        function (element, index, array) {
+          element.preventDefault();
+          window.location = "/users/"+this.attributes.data.value;
+
+        });
+    }
+
+
+
+
+
+    $(document).ready(function(){
+      $('#fav-table').DataTable({
+        "pageLength": <%= config.favUsers %>
+      });
+      $('#users-table').DataTable({
+        "pageLength": <%= config.listUsers %>
+      });
+      $('#fav-table').on( 'length.dt', function ( e, settings, len ) {
+          console.log( 'New page length: '+len );
+          $.ajax({
+              url: '/config',
+              type: 'post',
+              data: { type:'favUsers', value: len },
+              success:function(data){
+
+              }
+          });
+      } );
+      $('#users-table').on( 'length.dt', function ( e, settings, len ) {
+          console.log( 'New page length: '+len );
+          $.ajax({
+              url: '/config',
+              type: 'post',
+              data: { type:'listUsers', value: len },
+              success:function(data){
+
+              }
+          });
+      } );
+
+
+      var list = document.getElementsByClassName('bookmark');
+      console.log(list);
+      for (var i = 0; i < list.length; i++) {
+        addEvent(list[i], "click",
+          function (element, index, array) {
+            if (element.stopPropagation) {
+                    element.stopPropagation();
+                } else {
+                    element.cancelBubble = true;
+            }
+            var checked = this.checked, obj = $(this).parents('tr');
+            $.ajax({
+                url: '/users/fav',
+                type: 'post',
+                data: { id: this.attributes.data.value, book: checked},
+                success:function(data){
+                  console.log(obj);
+                  //delete(obj);
+                  if (!checked){
+                    //delete(this);
+                  }
+
+
+                  var table = $('#fav-table').DataTable();
+
+                  //$('#example tbody').on( 'click', 'img.icon-delete', function () {
+                      table
+                          .row( obj )
+                          .remove()
+                          .draw();
+                  //} );
+
+
+
+                }
+            });
+
+          });
+      }
+
+    })
+</script>
+<% include footer %>

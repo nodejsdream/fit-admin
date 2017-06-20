@@ -1,0 +1,137 @@
+<% include header %>
+<% include nav %>
+<% include functions %>
+<div class="container">
+  <h2>Daily report</h2>
+  </br>
+  <table id="report-table" class="table table-hover table-striped">
+    <thead>
+      <tr>
+        <th>ATHLETE ID</th><th>FIRST NAME</th><th>LAST NAME</th><th>PLAN ID</th><th>PLANE NAME</th><th>FREE USERS</th><th>PAID USERS</th><th>DATE</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (var i = 0; i < reports.length; i++) { %>
+      <tr class='clickable-row' data='<%= reports[i].planId %>' >
+        <td><%= reports[i].athleteId %></td>
+        <td><%= reports[i].athleteFirstName %></td>
+        <td><%= reports[i].athleteLastName %></td>
+        <td><%= reports[i].planId %></td>
+        <td><%= reports[i].planName %></td>
+        <td><%= reports[i].freeTrialUsers %></td>
+        <td><%= reports[i].paidUsers %></td>
+        <td><%= dateConverter(reports[i].date) %></td>
+      </tr>
+     <% } %>
+    <tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Chart reports</h4>
+      </div>
+      <div class="modal-body">
+        <canvas id="myChart" width="400" height="400"></canvas>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div id='wait' style="position: fixed; left: 50%; top: 50%; display: none;">
+    <img src="/images/ajax-loader.gif"></img>
+</div>
+<script>
+    var myChart;
+    $(document).ready(function(){
+      $('#report-table').DataTable({
+        "pageLength": <%= config.reportPage %>
+      });
+
+      var list = document.getElementsByClassName('clickable-row');
+      for (var i = 0; i < list.length; i++) {
+        addEvent(list[i], "click",
+          function (element, index, array) {
+            element.preventDefault();
+
+            $.ajax({
+                url: '/reports/single-plan-stats?planId='+this.attributes.data.value<% if(locals.report_date){ %>+'&date=<%= report_date %>'<% } %>,
+                method: 'GET',
+                dataType: 'json',
+                cache: false,
+                beforeSend: function() { $('#wait').show(); },
+                complete: function() { $('#wait').hide(); },
+                success: function (d) {
+
+                  chartData = {
+                       labels: d.label,
+                       datasets: [
+                           {
+                               label: '# Trial users',
+                               fill: false,
+                               borderColor: "rgba(0,0,192,1)",
+                               data: d.trial
+                           },
+                           {
+                               label: '# Paid users',
+                               fill: false,
+                               borderColor: "rgba(192,0,0,1)",
+                               data: d.paid
+                           }
+                       ]
+                   };
+                   var ctx = document.getElementById("myChart");
+                   if (typeof myChart !== "undefined") {
+                     myChart.destroy();
+                   }
+                   myChart = new Chart(ctx, {
+                       type: 'line',
+                       data: chartData
+                   });
+
+                  $('#myModal').modal();
+                }
+            });
+
+          });
+      }
+
+      $('#myModal').on('hidden.bs.modal', function () {
+/*        var $chart;
+        $scope.$on("create", function (event, chart) {
+          if (typeof $chart !== "undefined") {
+            $chart.destroy();
+          }
+
+          $chart = chart;
+        });
+*/
+      })
+
+
+
+      $('#report-table').on( 'length.dt', function ( e, settings, len ) {
+          console.log( 'New page length: '+len );
+          $.ajax({
+              url: '/config',
+              type: 'post',
+              data: { type:'reportPage', value: len },
+              success:function(data){
+
+              }
+          });
+      } );
+
+    })
+</script>
+
+<% include footer %>

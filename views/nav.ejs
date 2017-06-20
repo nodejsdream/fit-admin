@@ -1,0 +1,69 @@
+<nav class="navbar navbar-default navbar-static-top navbar-inverse" >
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        <img src="/images/logo-w.png"/>
+      </a>
+
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a>Hello, <%= userName %></a></li>
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+    <div>
+      <ul class="nav nav-tabs">
+        <li<% if(locals.report){ %><% }else{ %> class="active"<% } %>><a data-toggle="tab" href="#search">USER ADMIN</a></li>
+        <li<% if(locals.report){ %> class="active"<% }else{ %><% } %>><a data-toggle="tab" href="#report">SUBSCRIPTION REPORTS</a></li>
+      </ul>
+
+
+      <div class="tab-content">
+          <div id="search" class="tab-pane fade<% if(locals.report){ %><% }else{ %> in active<% } %>">
+            <form class="navbar-form navbar-left" id="users" role="search" action="/users">
+              <div class="form-group">
+                <div class="input-group" >
+                  <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First name">
+                  <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name">
+                  <input type="text" class="form-control" id="emailAddress" name="emailAddress" placeholder="email">
+                  <input type="text" class="form-control" id="vendor" name="vendor" placeholder="ID (Google, Stripe, Apple)">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">Go!</button>
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div id="report" class="tab-pane fade<% if(locals.report){ %> in active<% }else{ %><% } %>">
+            <form class="navbar-form navbar-left" id="report" role="search" action="/reports"  method="post">
+              <div class="form-group">
+                <div class="input-group" >
+                  <label class="control-label" id="reportDate" for="date">Date</label>
+                  <input class="form-control" id="date" name="date" placeholder="YYYY-MM-DD" type="text"/>
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">Go!</button>
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>
+      </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+          var date_input=$('input[name="date"]'); //our date input has the name "date"
+          var container=$('.bootstrap-iso form #reports').length>0 ? $('.bootstrap-iso form #reports').parent() : "body";
+          var options={
+            format: 'yyyy-mm-dd',
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+          };
+          date_input.datepicker(options);
+        })
+    </script>
+
+
+
+  </div>
+</nav>
